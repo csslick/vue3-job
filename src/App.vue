@@ -1,22 +1,18 @@
 <script setup>
+import Login from './view/Login.vue'
+import SignUp from './view/SignUp.vue'
+import JobPost from './view/JobPost.vue'
+import JobList from './view/JobList.vue'
+import JobDetail from './view/JobDetail.vue'
+import UserProfile from './view/UserProfile.vue'
 
 </script>
 
 <template>
-  <div class="container">
-    <h1>Vue3 Job</h1>
-    <p>text color</p>
-    <a href="#">link</a>
-  </div>
+  <Login />
+  <SignUp />
 </template>
 
 <style scoped lang="scss">
-  div {
-    h1 {
-      color: red;
-        &:hover {
-        color: blue;
-      }
-    }
-  }
+
 </style>
