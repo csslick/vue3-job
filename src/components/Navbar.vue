@@ -13,7 +13,16 @@
   
 <script setup>
   import { Icon } from '@iconify/vue';
+  import { useRoute } from 'vue-router';
+  import { watch } from 'vue';
 
+  let route = useRoute();
+  let currentPath = route.path;
+
+  watch(route, (newPath) => {
+    currentPath = newPath.path;
+    console.log(currentPath);
+  });
 </script>
   
 <style lang="scss" scoped>
