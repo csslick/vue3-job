@@ -59,6 +59,6 @@ const handleSignup = () => {
 </script>
   
 <style lang="scss">
-  @import "../style/form.scss";
-  // @use "../style/form.scss";
+  // @import "../style/form.scss";
+  @use "../style/form.scss";
 </style>
