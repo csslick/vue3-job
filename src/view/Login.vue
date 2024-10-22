@@ -41,5 +41,6 @@
 </script>
   
 <style scoped>
-  @import "../style/form.scss";
+  /* @import "../style/form.scss"; */
+  @use "../style/form.scss";
 </style>
