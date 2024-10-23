@@ -59,7 +59,16 @@ const handleSignup = async () => {
     alert(error.message)
   } else {
     console.log('회원가입 성공')
-    console.log(data)
+    const { error } = await supabase
+      .from('user_table')
+      .insert({ 
+        tel: tel.value,
+        text: text.value,
+      })
+      if(error) { 
+        alert('에러')
+        console.log(error)
+      }
   }
 
 }
