@@ -32,6 +32,26 @@
         />
       </div>
       <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          placeholder="이름 입력"
+          required
+          v-model="name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="addr">Address</label>
+        <input 
+          type="text" 
+          id="addr" 
+          placeholder="주소 입력"
+          required
+          v-model="addr"
+        />
+      </div>
+      <div class="form-group">
         <label for="text">자기소개</label>
         <textarea id="text" v-model="text"></textarea>
       </div>
@@ -48,6 +68,8 @@ const email = ref('');
 const password = ref('');
 const tel = ref('');
 const text = ref('');
+const name = ref('');
+const addr = ref('');
  
 const handleSignup = async () => {
   const { data, error } = await supabase.auth.signUp({
@@ -64,6 +86,8 @@ const handleSignup = async () => {
       .insert({ 
         tel: tel.value,
         text: text.value,
+        name: name.value,
+        addr: addr.value,
       })
       if(error) { 
         alert('에러')
