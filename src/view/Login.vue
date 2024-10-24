@@ -1,6 +1,6 @@
 <template>
   <div class="loading_info" v-if="isLoading">
-    <p>회원가입 처리중...</p>
+    <p>로그인 처리중...</p>
   </div>
   <div class="form-container">
     <form @submit.prevent="handleLogin">
@@ -62,7 +62,7 @@
 
 </script>
   
-<style scoped>
+<style scoped lang="scss">
   /* @import "../style/form.scss"; */
   @use "../style/form.scss";
 </style>

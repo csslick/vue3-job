@@ -101,9 +101,9 @@ const handleSignup = async () => {
         console.log(error)
       } else {
         alert('회원가입 성공')
-        isLoading.value = false; // 서버 요청 완료
         router.push('/');
       }
+      isLoading.value = false; // 서버 요청 완료
   }
 
 }
