@@ -69,7 +69,6 @@ import supabase from '../supabase';
 import { ref } from 'vue';
 
 const router = useRouter();
-
 const email = ref('');
 const password = ref('');
 const tel = ref('');

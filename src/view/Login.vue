@@ -1,5 +1,7 @@
 <template>
-  <h1>Login</h1>
+  <div class="loading_info" v-if="isLoading">
+    <p>회원가입 처리중...</p>
+  </div>
   <div class="form-container">
     <form @submit.prevent="handleLogin">
       <div class="form-group">
@@ -29,13 +31,33 @@
 </template>
   
 <script setup>
+  import { useRouter } from 'vue-router';
+  import supabase from '../supabase';
   import { ref } from 'vue';
 
   const email = ref('');
   const password = ref('');
 
-  const handleLogin = () => {
+  const router = useRouter();
+  const isLoading = ref(false);
+
+  const handleLogin = async () => {
     console.log(email.value, password.value);
+    isLoading.value = true; // 서버 요청 시작
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+
+    if(error) {
+      alert(error.message)
+    } else {
+      alert('로그인 성공')
+      console.log(data)
+      isLoading.value = false; // 서버 요청 완료 
+      router.push('/job-list');
+    }
   }
 
 </script>
