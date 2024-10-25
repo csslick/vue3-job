@@ -1,13 +1,16 @@
 <template>
-  <h1>UserProfile</h1>
+  <div class="container" v-if="isLogin">
+    <h1>UserProfile</h1>
+  </div>
 </template>
   
 <script setup>
 import supabase from '../supabase';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
+const isLogin = ref(false); // 화면 표시 상태 변수
 
 // 마운트시 로그인 상태 확인하기
 onMounted(async() => {
@@ -16,8 +19,10 @@ onMounted(async() => {
 
   if(user) {
     console.log('로그인 상태')
+    isLogin.value = true
   } else {
     console.log('로그아웃 상태')
+    isLogin.value = false
     alert('로그인 후 이용해주세요.')
     router.push('/')
   }
