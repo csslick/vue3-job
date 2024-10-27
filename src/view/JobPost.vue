@@ -1,5 +1,5 @@
 <template>
-  <div class="form-container">
+  <div class="form-container" v-if="isLogin">
     <form>
       <!-- 1.제목 -->
       <div class="form-group">
@@ -102,9 +102,15 @@
 </template>
   
 <script setup>
-  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import supabase from '../supabase';
+  import { ref, onMounted } from 'vue';
   import { Icon } from '@iconify/vue';
 
+  const isLogin = ref(false); // 화면 표시 상태 변수
+  const router = useRouter()
+
+  // 입력 항목
   const title = ref('');
   const todo = ref('');
   const pay_rule = ref('');
@@ -114,6 +120,26 @@
   const location = ref('');
   const tel = ref('');
 
+  // 마운트시 로그인 상태 확인하기
+  onMounted(async() => {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if(user) {
+      console.log('로그인 상태')
+      isLogin.value = true
+
+      // user 정보 가져오기
+      const { data, error } = await supabase
+        .from('user_table')
+        .select()
+        .eq('id', user.id)
+    } else {
+      console.log('로그아웃 상태')
+      isLogin.value = false
+      alert('로그인 후 이용해주세요.')
+      router.push('/')
+    }
+  })
 </script>
   
 <style lang="scss" scoped>
