@@ -102,7 +102,7 @@
 </template>
   
 <script setup>
-  import { useAuth} from '../auth/auth';
+  import { useAuth } from '../auth/auth';
   import { useRouter } from 'vue-router';
   import supabase from '../supabase';
   import { ref, onMounted } from 'vue';
