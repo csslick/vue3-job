@@ -125,6 +125,8 @@
   const company_name = ref('');
   const location = ref('');
   const tel = ref('');
+  // img_url: 첨부한 사진은 storage에 저장하고 url을 저장
+  // author: 작성자 id(auth.user의 uid)
 
   const previewImage = ref(null);
 
