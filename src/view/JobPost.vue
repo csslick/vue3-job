@@ -122,7 +122,7 @@
   // 입력 항목
   const title = ref('');
   const todo = ref('');
-  const pay_rule = ref('');
+  const pay_rule = ref('시급');
   const pay = ref('');
   const desc = ref('');
   const company_name = ref('');
