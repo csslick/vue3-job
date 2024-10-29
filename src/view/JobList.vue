@@ -3,6 +3,7 @@
     <li class="job-item" v-for="post in posts" :key="post.id">
       <div class="header">
         <h3>{{ post.title }}</h3>
+        <!-- 업체명 추가해 주세요 -->
         <span>{{ post.company_name }}</span>
         <span>&middot;</span> 
         <address>{{ post.location}}</address>
