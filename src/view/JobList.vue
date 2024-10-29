@@ -3,6 +3,8 @@
     <li class="job-item" v-for="post in posts" :key="post.id">
       <div class="header">
         <h3>{{ post.title }}</h3>
+        <span>{{ post.company_name }}</span>
+        <span>&middot;</span> 
         <address>{{ post.location}}</address>
         <span>&middot;</span>
         <time>{{ format(new Date(post.created_at), "yyyy-MM-dd") }}</time>
@@ -49,7 +51,7 @@ ul {
   }
 }
 
-address, time {
+address, time, span {
   font-style: normal;
   display: inline;
   font-size: 12px;
