@@ -116,7 +116,6 @@
   import { Icon } from '@iconify/vue';
 
   const { isLogin, user, checkLoginStatus } = useAuth();
-
   const router = useRouter();
   const isLoading = ref(false);
 
