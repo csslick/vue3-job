@@ -136,24 +136,25 @@
     isLoading.value = true;
 
     const { error } = await supabase
-    .from('job_posts')
-    .insert({ 
-      title: title.value,
-      todo: todo.value,
-      pay_rule: pay_rule.value,
-      pay: pay.value,
-      desc: desc.value,
-      company_name: company_name.value,
-      location: location.value,
-      tel: tel.value,
-      img_url: 'https://placehold.co/400x250',
-    })
-    if(error) {
-      alert(error.message);
-    } else {
-      alert('등록 성공');
-      router.push('/job-list');
-    }
+      .from('job_posts')
+      .insert({ 
+        title: title.value,
+        todo: todo.value,
+        pay_rule: pay_rule.value,
+        pay: pay.value,
+        desc: desc.value,
+        company_name: company_name.value,
+        location: location.value,
+        tel: tel.value,
+        img_url: 'https://placehold.co/400x250',
+      })
+      if(error) {
+        alert(error.message);
+      } else {
+        alert('등록 성공');
+        router.push('/job-list');
+      }
+      
     isLoading.value = false;
   }
 
