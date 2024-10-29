@@ -135,7 +135,7 @@
     isLoading.value = true;
 
     const { error } = await supabase
-      .from('job_posts2')
+      .from('job_posts')
       .insert({ 
         title: title.value,
         todo: todo.value,
