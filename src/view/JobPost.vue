@@ -136,7 +136,7 @@
     isLoading.value = true;
 
     const { error } = await supabase
-      .from('job_posts')
+      .from('job_posts2')
       .insert({ 
         title: title.value,
         todo: todo.value,
@@ -149,7 +149,7 @@
         img_url: 'https://placehold.co/400x250',
       })
       if(error) {
-        alert(error.message);
+        alert(error.message || '등록 실패');
       } else {
         alert('등록 성공');
         router.push('/job-list');
