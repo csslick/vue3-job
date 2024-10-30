@@ -12,7 +12,7 @@
       </div>
       <div class="bottom-info">
         <p class="pay">시급: {{ posts.pay }}원</p>
-        <img :src="post.img_url" alt="image" width="64" height="64">
+        <img :src="post.img_url" alt="image" width="64" height="64"/>
       </div>
     </li>
   </ul>
