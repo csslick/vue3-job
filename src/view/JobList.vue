@@ -31,7 +31,9 @@
   onMounted(async () => {
     const { data, error } = await supabase
       .from('job_posts')
-      .select();
+      .select()
+      .order('created_at', { ascending: false });
+
     posts.value = data;
     console.log(posts.value);
 
