@@ -11,7 +11,7 @@
         <time>{{ format(new Date(post.created_at), "yyyy-MM-dd") }}</time>
       </div>
       <div class="bottom-info">
-        <p class="pay">시급: {{ posts.pay }}원</p>
+        <p class="pay">{{post.pay_rule}}: {{ post.pay.toLocaleString() }}원</p>
         <img :src="post.img_url" alt="image" width="64" height="64"/>
       </div>
     </li>
