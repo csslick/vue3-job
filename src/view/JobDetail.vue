@@ -18,9 +18,13 @@
       <textarea class="desc" rows="5" disabled>{{ post.desc }}</textarea>
     </div>
     <!-- 하단 고정 버튼 -->
-    <div class="bottom-btn-group">
+    <div class="bottom-btn-group" v-if="post && post.author !== user.id">
       <button class="btn-tel">전화문의</button>
       <button class="btn-apply">지원하기</button>
+    </div>
+    <div class="bottom-btn-group" v-if="post && post.author === user.id">
+      <button class="btn-tel">수정</button>
+      <button class="btn-apply">삭제</button>
     </div>
   </section>
 </template>
@@ -57,8 +61,6 @@ onMounted(async () => {
     }
   }
 });
-
-
 </script>
 
 <style scoped lang="scss">
