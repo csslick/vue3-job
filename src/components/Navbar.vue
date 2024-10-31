@@ -17,7 +17,7 @@
 
     <!-- job-detail, user-profile 좌측 뒤로가기 아이콘 -->
     <router-link 
-      v-if="currentPath === '/job-detail' || currentPath === '/user-profile'"
+      v-if="currentPath.startsWith('/job-detail') || currentPath === '/user-profile'"
       to="/job-list" 
       class="btn-close"
     >
@@ -29,18 +29,6 @@
       />
     </router-link>
     
-    <router-link 
-	      v-if="currentPath === '/job-detail' || currentPath === '/user-profile'"
-	      to="/job-list" 
-	      class="btn-close"
-	    >
-	      <Icon 
-	        icon="ic:baseline-arrow-back" 
-	        width="24" 
-	        height="24"  
-	        style="color: 1e1e1e" 
-	      />
-	    </router-link>
     <!-- job-list 우측에 배치되는 프로필, 글쓰기 아이콘 -->
     <div class="right-icons" v-if="currentPath === '/job-list'">
       <router-link to="/user-profile">
@@ -81,7 +69,7 @@
       title.value = '회원가입';
     } else if (currentPath === '/job-list') {
       title.value = '땅콩알바';
-    } else if (currentPath === '/job-detail') {
+    } else if (currentPath.startsWith('/job-detail')) {
       title.value = '상세보기';
     } else if (currentPath === '/job-post') {
       title.value = '구인등록'
