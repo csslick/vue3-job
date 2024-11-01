@@ -24,22 +24,43 @@
     </div>
     <div class="bottom-btn-group" v-if="post && post.author === user.id">
       <router-link class="btn-tel" :to="`/job-post-update/${post.id}`">수정</router-link>
-      <button class="btn-apply">삭제</button>
+      <button class="btn-apply" @click="handelDelete">삭제</button>
     </div>
   </section>
 </template>
 
 <script setup>
 import { useAuth } from '../auth/auth';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import supabase from '../supabase';
 import { ref, onMounted } from 'vue';
 
 const { isLogin, user, checkLoginStatus } = useAuth(); // 로그인 상태 확인 함수 가져오기
 const route = useRoute();
+const router = useRouter();
 const id = route.params.id;
 const post = ref(null);
 console.log(route.params.id);
+
+// 글삭제 함수
+const handelDelete = async () => {
+  const conf = confirm('정말 삭제하시겠습니까?')
+
+  if (!conf) return;
+  
+  const { error } = await supabase
+    .from('job_posts')
+    .delete()
+    .eq('id', id)
+
+    if(error) {
+      alert('글삭제 실패')
+    } else {
+      alert('삭제 완료');
+      router.push('/job-list');
+    }
+
+}
 
 // DB에서 글 가져오기
 onMounted(async () => {
