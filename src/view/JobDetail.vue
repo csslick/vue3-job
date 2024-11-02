@@ -20,7 +20,7 @@
     <!-- 하단 고정 버튼 -->
     <div class="bottom-btn-group" v-if="post && post.author !== user.id">
       <a class="btn-tel" :href="`tel:${post.tel}`">전화문의</a>
-      <button class="btn-apply">지원하기</button>
+      <button class="btn-apply" @click="handleApply">지원하기</button>
     </div>
     <div class="bottom-btn-group" v-if="post && post.author === user.id">
       <router-link class="btn-tel" :to="`/job-post-update/${post.id}`">수정</router-link>
@@ -41,6 +41,46 @@ const router = useRouter();
 const id = route.params.id;
 const post = ref(null);
 console.log(route.params.id);
+
+// 지원하기 함수
+const handleApply = async () => {
+
+// 유저 데이터에서 이름과 전화번호 가져오기(user_table에서 가져와야 됨)
+const { data, error } = await supabase
+  .from('user_table')
+  .select()
+  .eq('id', user.value.id) 
+  .single();
+
+  if(error) {
+    alert('오류가 발생했습니다');
+    return;
+  }
+  console.log('user data:', data)
+
+// 지원내역 저장
+const { error: err } = await supabase
+  .from('job_apply_list')
+  .insert({
+    job_title: post.value.title, // 글 제목
+    employer_id: post.value.author, // 고용주: 글 작성자 ID
+    applicant_id: user.value.id, // 지원자: 현재 로그인한 사용자 ID
+    applicant_name: data.name, // 지원자: 현재 로그인한 사용자 이름
+    applicant_tel: data.tel, // 지원자: 현재 로그인한 사용자 전화번호
+    post_id: post.value.id, // 고용주가 게시한 글 ID
+  })
+
+  if(err) {
+    alert('오류가 발생했습니다');
+  } else {
+    alert('지원이 완료되었습니다.');
+    router.push('/job-list');
+  }
+
+// 지원이 완료되면 글목록으로 이동
+
+};
+
 
 // 글삭제 함수
 const handelDelete = async () => {
