@@ -20,7 +20,8 @@
     <!-- 하단 고정 버튼 -->
     <div class="bottom-btn-group" v-if="post && post.author !== user.id">
       <a class="btn-tel" :href="`tel:${post.tel}`">전화문의</a>
-      <button class="btn-apply" @click="handleApply">지원하기</button>
+      <button class="btn-apply-disable" v-if="isApplied">지원완료</button>
+      <button class="btn-apply" @click="handleApply" v-if="!isApplied">지원하기</button>
     </div>
     <div class="bottom-btn-group" v-if="post && post.author === user.id">
       <router-link class="btn-tel" :to="`/job-post-update/${post.id}`">수정</router-link>
@@ -40,7 +41,27 @@ const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
 const post = ref(null);
+const isApplied = ref(false); // 지원내역 확인 변수
 console.log(route.params.id);
+
+// 지원내역 확인 함수
+const checkApply = async () => {
+  const { data, error } = await supabase
+    .from('job_apply_list')
+    .select()
+    .eq('applicant_id', user.value.id)
+    .eq('post_id', id);
+
+    if(error) {
+      alert('오류가 발생했습니다');
+      return;
+    }
+
+    if(data.length > 0) {
+      isApplied.value = true;
+    }
+}
+
 
 // 지원하기 함수
 const handleApply = async () => {
@@ -81,7 +102,6 @@ const { error: err } = await supabase
 
 };
 
-
 // 글삭제 함수
 const handelDelete = async () => {
   const conf = confirm('정말 삭제하시겠습니까?')
@@ -121,6 +141,9 @@ onMounted(async () => {
       alert('글 가져오기 실패');
     }
   }
+
+  // 지원내역 확인
+  checkApply();
 });
 </script>
 
@@ -189,6 +212,10 @@ h2 {
 
   .btn-apply {
     background-color: var(--main-color-light);
+  }
+
+  .btn-apply-disable {
+    background-color: #ccc;
   }
 }
 </style>
