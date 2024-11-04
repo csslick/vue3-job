@@ -12,20 +12,69 @@
       <p>{{ text }}</p>
     </div>
     <button class="logout" @click="handleLogout">로그아웃</button>
+
+    <details class="job-list" >
+      <summary>내 지원내역</summary>
+      <p v-for="job in job_apply_list" :key="job.id">
+        <span>[지원완료] {{  job.job_title }}</span>
+        <time>{{ new Date(job.created_at).toLocaleDateString() }}</time>
+      </p>
+    </details>
+    <details class="job-list" >
+      <summary>받은 지원내역</summary>
+      <p v-for="job in job_recieve_list" :key="job.id">
+        <span>{{ job.applicant_name }}님이 <q>{{ job.job_title }}</q>에 지원했습니다.</span>
+        <time>{{ new Date(job.created_at).toLocaleDateString() }}</time>
+      </p>
+    </details>
   </div>
 </template>
   
 <script setup>
+import { useAuth } from '../auth/auth';
 import supabase from '../supabase';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const { isLogin, user, checkLoginStatus } = useAuth(); // 로그인 상태 확인 함수 가져오기
 const router = useRouter()
-const isLogin = ref(false); // 화면 표시 상태 변수
+// const isLogin = ref(false); // 화면 표시 상태 변수
 
 const name = ref('사용자 이름');
 const addr = ref('사용자 주소');
-const text = ref('IT와 웹 개발에 대한 열정을 가진 개발자입니다. Vue.js와 JavaScript에 강점을 두고 있으며, 효율적인 코드와 창의적인 문제 해결에 집중합니다. 성장과 도전을 통해 더 나은 결과를 만들기 위해 노력하고 있습니다.')
+const text = ref('자기소개 내용');
+
+const job_apply_list = ref([]);
+const job_recieve_list = ref([]);
+
+// 받은 지원내역 가져오는 함수
+const getRecieveList = async () => {
+  const { data, error } = await supabase
+    .from('job_apply_list')
+    .select()
+    .eq('employer_id', user.value.id)
+  
+    if(error) {
+      alert('받은 지원내역 가져오기 실패');
+    } else {
+      job_recieve_list.value = data;
+      console.log('job_recieve_list:', job_recieve_list.value);
+    }  
+}
+
+const getApplyList = async () => {
+  const { data, error } = await supabase
+    .from('job_apply_list')
+    .select()
+    .eq('applicant_id', user.value.id)
+  
+    if(error) {
+      alert('지원내역 가져오기 실패');
+    } else {
+      job_apply_list.value = data;
+      console.log('', job_apply_list.value);
+    }
+}
 
 const handleLogout = async () => {
   const { error } = await supabase.auth.signOut()
@@ -39,32 +88,21 @@ const handleLogout = async () => {
 
 // 마운트시 로그인 상태 확인하기
 onMounted(async() => {
-  const { data: { user } } = await supabase.auth.getUser()
-  console.log(user?.email)
+  await checkLoginStatus();
+  await getApplyList();
+  await getRecieveList();
 
-  if(user) {
-    console.log('로그인 상태')
-    isLogin.value = true
-
-    // user 정보 가져오기
-    const { data, error } = await supabase
-      .from('user_table')
-      .select()
-      .eq('id', user.id)
-    if(data) {
-      console.log('user data:', data);
-      name.value = data[0].name;
-      addr.value = data[0].addr;
-      text.value = data[0].text
-    }
-
-  } else {
-    console.log('로그아웃 상태')
-    isLogin.value = false
-    alert('로그인 후 이용해주세요.')
-    router.push('/')
-  }
-
+  // user_table에서 사용자 정보 가져오기(기존 삭제한 코드 참조)
+  const { data, error } = await supabase
+    .from('user_table')
+    .select()
+    .eq('id', user.value.id)
+    .single()
+  
+    // console.log('user_table', data);
+    name.value = data.name;
+    addr.value = data.addr;
+    text.value = data.text;
 })
   
 </script>
@@ -130,4 +168,33 @@ onMounted(async() => {
     }
   }
 
+  .job-list {
+    list-style-type: none;
+    font-size: 14px;
+    padding: 1rem 0;
+    
+    summary {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #d9d9d9;
+    }
+
+    p {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      time {
+        color: #777;
+        font-size: 12px;
+        font-weight: 400;
+        width: 10em;
+        // outline: 1px solid red;
+        text-align: right;
+      }
+    }
+
+    q { font-weight: bold;}
+  }
 </style>
