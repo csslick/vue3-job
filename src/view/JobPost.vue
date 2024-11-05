@@ -128,11 +128,16 @@
   const company_name = ref('');
   const location = ref('');
   const tel = ref('');
-  // img_url: 첨부한 사진은 storage에 저장하고 url을 저장
-  // author: 작성자 id(auth.user의 uid)
+  const img_url = ref(''); // 첨부한 사진은 storage에 저장하고 url을 저장
+
+  let file = null; // 파일객체 저장 변수
 
   const handleSubmit = async () => {
     isLoading.value = true;
+
+    if(previewImage.value) {
+      await uploadImage();
+    }
 
     const { error } = await supabase
       .from('job_posts')
@@ -145,7 +150,7 @@
         company_name: company_name.value,
         location: location.value,
         tel: tel.value,
-        img_url: 'https://placehold.co/400x250',
+        img_url: img_url.value,
       })
       if(error) {
         alert(error.message || '등록 실패');
@@ -160,13 +165,39 @@
   const previewImage = ref(null);
 
   const onFileChange = (e) => {
-    const file = e.target.files[0];
+    file = e.target.files[0];
     console.log(file);
 
     if(file) {
       previewImage.value = URL.createObjectURL(file);
       console.log(previewImage.value);
     }
+  }
+
+  const uploadImage = async () => {
+    const { data, error } = await supabase
+      .storage
+      .from('images')
+      .upload(file.name, file, {
+        cacheControl: '3600',
+        upsert: false
+      })
+    
+      if(error) {
+        alert('업로드 오류');
+      } else {
+        console.log('uploaded file:', data)
+        // 이미지 url 가져오기
+        const { data:imgData } = supabase
+        .storage
+        .from('images')
+        .getPublicUrl(file.name)
+        console.log('file url:', imgData.publicUrl)
+
+        // 테이블에 저장할 이미지 URL 변수
+        img_url.value = imgData.publicUrl;
+      }
+
   }
 
   // 마운트시 로그인 상태 확인하기
