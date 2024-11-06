@@ -13,7 +13,7 @@
         </div>
         <div class="bottom-info">
           <p class="pay">{{post.pay_rule}}: {{ post.pay.toLocaleString() }}원</p>
-          <img :src="post.img_url" alt="image" width="64" height="64"/>
+          <img v-if="post.img_url" :src="post.img_url" alt="image" width="64" height="64"/>
         </div>
       </router-link>
     </li>

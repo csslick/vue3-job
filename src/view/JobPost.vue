@@ -262,7 +262,7 @@
         display: flex; 
         align-items: center;
         img { 
-          border: 1px solid red;
+          // border: 1px solid red;
           margin-left: 30px; 
         }
       }

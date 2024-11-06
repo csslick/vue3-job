@@ -1,6 +1,6 @@
 <template>
   <section v-if="isLogin && post">
-    <figure>
+    <figure v-if="post.img_url">
       <img :src="post.img_url" alt="head image">
     </figure>
 
