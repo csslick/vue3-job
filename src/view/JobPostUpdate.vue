@@ -121,7 +121,6 @@
   const isLoading = ref(false);
   console.log('params:', route.params.id);
 
-
   // 입력 항목
   const title = ref('');
   const todo = ref('');
@@ -132,15 +131,31 @@
   const location = ref('');
   const tel = ref('');
   const img_url = ref('');
-  let file = null;
-
+  const prev_img_url = ref(''); // 이전 이미지 url 
+ 
+  const previewImage = ref(null); // 미리보기 이미지 변수
+  let file = null; // 파일 객체
+  
   const handleSubmit = async () => {
     isLoading.value = true;
 
     if(previewImage.value) {
-      await uploadImage();
+      // 기존 이미지 파일과 다른 경우(새로 첨부)
+      if(!prev_img_url.value.includes(file.name)) {
+        await uploadImage();
+
+        // 기존 이미지 삭제
+        const { data, error } = await supabase
+          .storage
+          .from('images')
+          .remove([prev_img_url.value.split('/').pop()])
+      } else {
+        // 파일 미첨부시 이전 이미지 사용
+        img_url.value = prev_img_url.value;
+      }
     }
 
+    // job_posts 테이블 수정
     const { error } = await supabase
       .from('job_posts')
       .update({ 
@@ -165,8 +180,6 @@
       
     isLoading.value = false;
   }
-
-  const previewImage = ref(null);
 
   const onFileChange = (e) => {
     file = e.target.files[0];
@@ -197,6 +210,8 @@
     location.value = data.location;
     tel.value = data.tel;
     previewImage.value = data.img_url;
+
+    prev_img_url.value = data.img_url; // 이전 이미지 URL
   }
 
   const uploadImage = async () => {
