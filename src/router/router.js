@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
+// import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import Login from '../view/Login.vue'
 import SignUp from '../view/SignUp.vue'
 import JobPost from '../view/JobPost.vue'
@@ -39,7 +40,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  // history: createWebHistory(),
+  history: createWebHashHistory(), // Hash 모드 설정
   routes,
 })
 
