@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      includeAssets: ['vite.svg', 'favicon.ico', 'robots.txt'], // 캐싱될 자료들
       registerType: 'autoUpdate',
       manifest: {
         name: '땅콩알바',

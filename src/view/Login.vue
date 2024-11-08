@@ -26,6 +26,8 @@
       </div>
       <button type="submit">로그인</button>
       <router-link to="/signup">회원가입</router-link>
+      <span> | </span>
+      <router-link to="/about">앱 소개</router-link>
     </form>
   </div>
 </template>
