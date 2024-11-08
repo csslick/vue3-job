@@ -7,6 +7,7 @@ import JobList from '../view/JobList.vue'
 import JobDetail from '../view/JobDetail.vue'
 import UserProfile from '../view/UserProfile.vue'
 import JobPostUpdate from '../view/JobPostUpdate.vue'
+import About from '../view/About.vue'
 
 const routes = [
   { 
@@ -36,6 +37,10 @@ const routes = [
   { 
     path: '/job-post-update/:id', 
     component: JobPostUpdate
+  },
+  { 
+    path: '/about', 
+    component: About
   },
 ]
 
